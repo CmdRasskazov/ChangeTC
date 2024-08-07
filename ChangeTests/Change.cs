@@ -24,6 +24,11 @@ namespace ChangeTests
                 throw new ArgumentException("Negative value");
             }
 
+            if ( amount == 0)
+            {
+                throw new ArgumentException("Change is not needed");
+            }
+
             return (false, availableCoins);
 
         }
