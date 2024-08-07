@@ -32,5 +32,11 @@ namespace ChangeTests
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(-10);
 
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Calculate_zero_value() {
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(0);
+        }
     }
 }
