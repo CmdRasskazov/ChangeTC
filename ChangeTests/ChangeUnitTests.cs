@@ -38,5 +38,16 @@ namespace ChangeTests
         public void Calculate_zero_value() {
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(0);
         }
+
+        [TestMethod]
+        public void Calculate_Positive_Value()
+        {
+
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(123);
+
+            // Assert
+            Assert.IsTrue(isAvailable);
+            
+        }
     }
 }
