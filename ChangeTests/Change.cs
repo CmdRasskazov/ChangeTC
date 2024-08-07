@@ -29,6 +29,20 @@ namespace ChangeTests
                 throw new ArgumentException("Change is not needed");
             }
 
+            // create a list of available coin denominations.
+            var coinDenominations = availableCoins.Keys.ToList();
+
+            // sort the coin denominations in descending order.
+            coinDenominations.Sort((a, b) => b - a);
+
+            // initialize the list to store the coins used for change.
+            List<int> changeCoins = new List<int>();
+            Dictionary<int, int> res = new Dictionary<int, int>();
+
+            
+
+
+
             return (false, availableCoins);
 
         }
