@@ -69,7 +69,8 @@ namespace ChangeTests
 
 
 
-            return (false, availableCoins);
+            // If the amount is not 0, cannot give change.
+            throw new ArgumentException("Change is impossible");
 
         }
 
