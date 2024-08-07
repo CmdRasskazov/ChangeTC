@@ -18,6 +18,12 @@ namespace ChangeTests
 
         public (bool isAvailable, Dictionary<int, int> coins) CalculateChange(int amount)
         {
+
+            if (amount < 0)
+            { // negative value is unacceptable
+                throw new ArgumentException("Negative value");
+            }
+
             return (false, availableCoins);
 
         }
