@@ -69,8 +69,28 @@ namespace ChangeTests
         [ExpectedException (typeof(ArgumentException))]
         public void Calculate_OverFLow_Value()
         {
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(124);
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(3301);
             
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FormatException))]
+        public void Calculate_Impossible_Value()
+        {
+            Dictionary<int, int> invalidCoins = new Dictionary<int, int>
+            {
+            { 100, -12 },
+            { 50, -22 },
+            { 10, -99 },
+            { 5, -99 },
+            { 2, -1 },
+            { 1, -2 }
+            };
+            MyCash testInvalidValueCash = new MyCash(invalidCoins);
+
+
+            (bool isAvailable, Dictionary<int, int> coins) = testInvalidValueCash.CalculateChange(228);
+
         }
     }
 }
