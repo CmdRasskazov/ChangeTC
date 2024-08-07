@@ -64,5 +64,13 @@ namespace ChangeTests
             Assert.AreEqual(expected_change[2], coins[2]);
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof(ArgumentException))]
+        public void Calculate_OverFLow_Value()
+        {
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(124);
+            
+        }
     }
 }
