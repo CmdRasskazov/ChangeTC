@@ -49,5 +49,20 @@ namespace ChangeTests
             Assert.IsTrue(isAvailable);
             
         }
+
+        [TestMethod]
+        public void Calculate_From_Possitive_Value_Query() {
+            Dictionary<int, int> expected_change = new Dictionary<int, int> {
+                {100, 1},
+                {10, 2},
+                {2, 2}
+            };
+
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(124);
+            Assert.AreEqual(expected_change[100], coins[100]);
+            Assert.AreEqual(expected_change[10], coins[10]);
+            Assert.AreEqual(expected_change[2], coins[2]);
+        }
+
     }
 }
