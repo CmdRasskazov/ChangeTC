@@ -24,8 +24,13 @@ namespace ChangeTests
 
 
         [TestMethod]
-        public void TestMethod1()
+        [ExpectedException(typeof(ArgumentException))]
+        public void Calculate_Negative_value()
         {
+
+            // Act
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(-10);
+
         }
     }
 }
