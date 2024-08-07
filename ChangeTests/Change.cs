@@ -42,6 +42,7 @@ namespace ChangeTests
             // Add coins to the change list and subtract their value from the amount
             foreach (int coin in coinDenominations)
             {
+                if (availableCoins[coin] < 0) throw new FormatException();
                 // We calculate the maximum number of coins of the current denomination that can be used
                 int maxCoins = Math.Min(availableCoins[coin], amount / coin);
 
