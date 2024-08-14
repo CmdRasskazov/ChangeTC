@@ -6,9 +6,8 @@ namespace ChangeTests
         [TestMethod]
         public void Calculate_Negative_value()
         {
-            Dictionary<int, int> availableCoins;
             MyCash myCash;
-            availableCoins = new Dictionary<int, int> {
+            var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
             { 10, 50 },
@@ -25,10 +24,8 @@ namespace ChangeTests
 
         [TestMethod]
         public void Calculate_zero_value() {
-            Dictionary<int, int> availableCoins;
             MyCash myCash;
-
-            availableCoins = new Dictionary<int, int> {
+            var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
             { 10, 50 },
@@ -45,10 +42,8 @@ namespace ChangeTests
         [TestMethod]
         public void Calculate_Positive_Value()
         {
-            Dictionary<int, int> availableCoins;
             MyCash myCash;
-
-            availableCoins = new Dictionary<int, int> {
+            var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
             { 10, 50 },
@@ -64,10 +59,8 @@ namespace ChangeTests
 
         [TestMethod]
         public void Calculate_From_Possitive_Value_Query() {
-            Dictionary<int, int> availableCoins;
             MyCash myCash;
-
-            availableCoins = new Dictionary<int, int> {
+            var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
             { 10, 50 },
@@ -76,7 +69,7 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            Dictionary<int, int> expected_change = new Dictionary<int, int> {
+            var expected_change = new Dictionary<int, int> {
                 {100, 1},
                 {10, 2},
                 {2, 2}
@@ -94,10 +87,8 @@ namespace ChangeTests
         [TestMethod]
         public void Calculate_OverFLow_Value()
         {
-            Dictionary<int, int> availableCoins;
             MyCash myCash;
-
-            availableCoins = new Dictionary<int, int> {
+            var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
             { 10, 50 },
@@ -115,7 +106,7 @@ namespace ChangeTests
         [ExpectedException(typeof(ArgumentException))]
         public void Calculate_Impossible_Value()
         {
-            Dictionary<int, int> invalidCoins = new Dictionary<int, int>
+            var invalidCoins = new Dictionary<int, int>
             {
             { 100, -12 },
             { 50, -22 },
