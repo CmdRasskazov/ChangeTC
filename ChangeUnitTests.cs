@@ -133,5 +133,20 @@ namespace ChangeTests
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(10);
             Assert.IsTrue(isAvailable);
         }
+
+        [TestMethod]
+        public void CalculateNotStandardRunFunc()
+        {
+            MyCash myCash;
+            var availableCoins = new Dictionary<int, int> {
+            { 100, 1 },
+            { 5, 3 },
+            { 2, 8 },
+            };
+
+            myCash = new MyCash(availableCoins);
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(10);
+            Assert.IsTrue(isAvailable);
+        }
     }
 }
