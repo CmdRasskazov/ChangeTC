@@ -36,9 +36,10 @@ namespace ChangeTests
                 throw new ArgumentException("Negative value");
             }
 
-            if ( amount == 0)
+            if (amount == 0)
             {
-                throw new ArgumentException("Change is not needed");
+                res.Clear();
+                return(false, res);
             }
 
             // Add coins to the change list and subtract their value from the amount
