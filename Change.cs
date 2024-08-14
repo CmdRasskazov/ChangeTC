@@ -9,11 +9,23 @@ namespace ChangeTests
     public class MyCash
     {
         private readonly Dictionary<int, int> availableCoins;
+        private List<int> coinDenominations;
+        Dictionary<int, int> res;
 
-
-        public MyCash(Dictionary<int, int> availableCoins)
+        public MyCash(Dictionary<int, int> _availableCoins)
         {
-            this.availableCoins = availableCoins;
+            coinDenominations = _availableCoins.Keys.ToList();
+            coinDenominations.Sort((a, b) => b - a);
+            res = new Dictionary<int, int>();
+
+            // check if value of coin is lower than 0
+            foreach (int coin in coinDenominations)
+            {
+                int currentValueOfCoin = _availableCoins[coin];
+                if (currentValueOfCoin < 0) throw new ArgumentException("Value of coins can not be <0", nameof(currentValueOfCoin));
+            }
+
+            availableCoins = _availableCoins;
         }
 
         public (bool isAvailable, Dictionary<int, int> coins) CalculateChange(int amount)
@@ -29,24 +41,13 @@ namespace ChangeTests
                 throw new ArgumentException("Change is not needed");
             }
 
-            // create a list of available coin denominations.
-            var coinDenominations = availableCoins.Keys.ToList();
-
-            // sort the coin denominations in descending order.
-            coinDenominations.Sort((a, b) => b - a);
-
-            // initialize the list to store the coins used for change.
-            List<int> changeCoins = new List<int>();
-            Dictionary<int, int> res = new Dictionary<int, int>();
-
             // Add coins to the change list and subtract their value from the amount
             foreach (int coin in coinDenominations)
             {
-                if (availableCoins[coin] < 0) throw new FormatException();
-                // We calculate the maximum number of coins of the current denomination that can be used
+                // calculate the maximum number of coins of the current denomination that can be used
                 int maxCoins = Math.Min(availableCoins[coin], amount / coin);
 
-                // Add coins to the change list and subtract their value from the amount
+                // add coins to the change list and subtract their value from the amount
                 for (int i = 0; i < maxCoins; i++)
                 {
                     if (res.ContainsKey(coin))
@@ -67,14 +68,8 @@ namespace ChangeTests
                     return (true, res);
                 }
             }
-
-
-
             // If the amount is not 0, cannot give change.
             throw new ArgumentException("Change is impossible");
-
         }
-
-
     }
 }
