@@ -63,13 +63,11 @@ namespace ChangeTests
                 }
 
                 // If the amount is 0, we have successfully calculated the change.
-                if (amount == 0)
-                {
-                    return (true, res);
-                }
+                if (amount == 0) return (true, res);
             }
             // If the amount is not 0, cannot give change.
-            throw new ArgumentException("Change is impossible");
+            res.Clear();
+            return(false, res);
         }
     }
 }
