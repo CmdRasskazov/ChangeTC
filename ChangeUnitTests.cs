@@ -24,7 +24,6 @@ namespace ChangeTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Calculate_zero_value() {
             Dictionary<int, int> availableCoins;
             MyCash myCash;
@@ -40,6 +39,7 @@ namespace ChangeTests
 
             myCash = new MyCash(availableCoins);
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(0);
+            Assert.IsFalse(isAvailable);
         }
 
         [TestMethod]
