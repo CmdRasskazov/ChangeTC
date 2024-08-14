@@ -33,7 +33,8 @@ namespace ChangeTests
 
             if (amount < 0)
             { // negative value is unacceptable
-                throw new ArgumentException("Negative value");
+                res.Clear();
+                return (false, res);
             }
 
             if (amount == 0)
