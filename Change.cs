@@ -9,14 +9,12 @@ namespace ChangeTests
     public class MyCash
     {
         private readonly Dictionary<int, int> availableCoins;
-        private List<int> coinDenominations;
-        private Dictionary<int, int> res;
+        private readonly List<int> coinDenominations;
 
         public MyCash(Dictionary<int, int> _availableCoins)
         {
             coinDenominations = _availableCoins.Keys.ToList();
-            coinDenominations.Sort((a, b) => b - a);
-            res = new Dictionary<int, int>();
+            coinDenominations.Sort();
 
             // check if value of coin is lower than 0
             foreach (int coin in coinDenominations)
@@ -31,45 +29,61 @@ namespace ChangeTests
         public (bool isAvailable, Dictionary<int, int> coins) CalculateChange(int amount)
         {
 
-            if (amount < 0)
-            { // negative value is unacceptable
-                res.Clear();
-                return (false, res);
-            }
+            if (amount <= 0)
+                // negative value is unacceptable
+                return (false, new Dictionary<int, int>());
 
-            if (amount == 0)
+            // check if amount is overFlow
+            if (availableCoins.Sum(x => x.Key * x.Value) < amount)
+                return (false, new Dictionary<int, int>());
+
+            bool[] myBoolTable = new bool[amount + 1];
+            myBoolTable[0] = true; // cause 0 is always availavle
+
+            for (int i = 1; i <= amount; i++)
             {
-                res.Clear();
-                return(false, res);
-            }
-
-            // Add coins to the change list and subtract their value from the amount
-            foreach (int coin in coinDenominations)
-            {
-                // calculate the maximum number of coins of the current denomination that can be used
-                int maxCoins = Math.Min(availableCoins[coin], amount / coin);
-
-                // add coins to the change list and subtract their value from the amount
-                for (int i = 0; i < maxCoins; i++)
+                foreach (int coin in coinDenominations)
                 {
-                    if (res.ContainsKey(coin))
+                    if (i >= coin && availableCoins[coin] > 0 && myBoolTable[i - coin])
                     {
-                        res[coin]++;
+                        myBoolTable[i] = true;
+                        break; // if find case we need move to the next sum
                     }
-                    else
-                    {
-                        res.Add(coin, 1);
-                    }
-
-                    amount -= coin;
                 }
-
-                // If the amount is 0, we have successfully calculated the change.
-                if (amount == 0) return (true, res);
             }
-            // If the amount is not 0, cannot give change.
-            res.Clear();
-            return(false, res);
+
+            if (!myBoolTable[amount])
+                return (false, new Dictionary<int, int>()); // sorry, change is not availible
+
+            // itterations to compare coins
+            var change = new Dictionary<int, int>();
+            int currentAmount = amount;
+            for (int i = coinDenominations.Count - 1; i >= 0; i--)
+            {
+                int coin = coinDenominations[i];
+                while (currentAmount >= coin && availableCoins[coin] > 0 && myBoolTable[currentAmount - coin])
+                {
+                    availableCoins[coin]--; // i spent here 2 hours to find a mistake
+                    if (change.ContainsKey(coin))
+                        change[coin]++;
+                    else
+                        change.Add(coin, 1);
+
+                    currentAmount -= coin;
+
+                    if (currentAmount < 0)
+                    {
+                        if (change.ContainsKey(coin))
+                            change[coin]--;
+                        else
+                            change.Add(coin, -1);
+
+                        currentAmount += coin;
+                        break;
+                    }
+                }
+            }
+            return (true, change);
         }
     }
 }
