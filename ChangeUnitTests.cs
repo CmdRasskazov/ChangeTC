@@ -112,7 +112,7 @@ namespace ChangeTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FormatException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void Calculate_Impossible_Value()
         {
             Dictionary<int, int> invalidCoins = new Dictionary<int, int>
@@ -125,8 +125,6 @@ namespace ChangeTests
             { 1, -2 }
             };
             MyCash testInvalidValueCash = new MyCash(invalidCoins);
-
-            (bool isAvailable, Dictionary<int, int> coins) = testInvalidValueCash.CalculateChange(228);
         }
     }
 }
