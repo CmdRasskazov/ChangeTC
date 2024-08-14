@@ -69,7 +69,7 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            var expected_change = new Dictionary<int, int> {
+            var expectedChange = new Dictionary<int, int> {
                 {100, 1},
                 {10, 2},
                 {2, 2}
@@ -78,9 +78,9 @@ namespace ChangeTests
             myCash = new MyCash(availableCoins);
 
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(124);
-            Assert.AreEqual(expected_change[100], coins[100]);
-            Assert.AreEqual(expected_change[10], coins[10]);
-            Assert.AreEqual(expected_change[2], coins[2]);
+            Assert.AreEqual(expectedChange[100], coins[100]);
+            Assert.AreEqual(expectedChange[10], coins[10]);
+            Assert.AreEqual(expectedChange[2], coins[2]);
         }
 
 
