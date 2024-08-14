@@ -92,7 +92,6 @@ namespace ChangeTests
 
 
         [TestMethod]
-        [ExpectedException (typeof(ArgumentException))]
         public void Calculate_OverFLow_Value()
         {
             Dictionary<int, int> availableCoins;
@@ -109,6 +108,7 @@ namespace ChangeTests
 
             myCash = new MyCash(availableCoins);
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(3301);
+            Assert.IsFalse(isAvailable);
         }
 
         [TestMethod]
