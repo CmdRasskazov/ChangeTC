@@ -17,7 +17,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(-10);
+            (bool isAvailable, var coins) = myCash.CalculateChange(-10);
             Assert.IsFalse(isAvailable);
 
         }
@@ -35,7 +35,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(0);
+            (bool isAvailable, var coins) = myCash.CalculateChange(0);
             Assert.IsFalse(isAvailable);
         }
 
@@ -53,7 +53,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(123);
+            (bool isAvailable, var coins) = myCash.CalculateChange(123);
             Assert.IsTrue(isAvailable);
         }
 
@@ -77,7 +77,7 @@ namespace ChangeTests
 
             myCash = new MyCash(availableCoins);
 
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(124);
+            (bool isAvailable, var coins) = myCash.CalculateChange(124);
             Assert.AreEqual(expectedChange[100], coins[100]);
             Assert.AreEqual(expectedChange[10], coins[10]);
             Assert.AreEqual(expectedChange[2], coins[2]);
@@ -98,7 +98,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(3301);
+            (bool isAvailable, var coins) = myCash.CalculateChange(3301);
             Assert.IsFalse(isAvailable);
         }
 

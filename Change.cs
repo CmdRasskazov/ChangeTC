@@ -10,7 +10,7 @@ namespace ChangeTests
     {
         private readonly Dictionary<int, int> availableCoins;
         private List<int> coinDenominations;
-        Dictionary<int, int> res;
+        private Dictionary<int, int> res;
 
         public MyCash(Dictionary<int, int> _availableCoins)
         {
