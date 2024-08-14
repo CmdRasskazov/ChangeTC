@@ -4,7 +4,6 @@ namespace ChangeTests
     public class ChangeUnitTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void Calculate_Negative_value()
         {
             Dictionary<int, int> availableCoins;
@@ -20,6 +19,7 @@ namespace ChangeTests
 
             myCash = new MyCash(availableCoins);
             (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(-10);
+            Assert.IsFalse(isAvailable);
 
         }
 
