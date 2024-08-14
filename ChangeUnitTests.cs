@@ -117,5 +117,21 @@ namespace ChangeTests
             };
             MyCash testInvalidValueCash = new MyCash(invalidCoins);
         }
+
+        [TestMethod]
+        public void Yoy()
+        {
+            MyCash myCash;
+            var availableCoins = new Dictionary<int, int> {
+            { 5, 1 },
+            { 4, 1 },
+            { 3, 2 },
+            { 2, 1 },
+            };
+
+            myCash = new MyCash(availableCoins);
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(10);
+            Assert.IsTrue(isAvailable);
+        }
     }
 }
