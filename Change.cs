@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +11,9 @@ namespace ChangeTests
     public class MyCash
     {
         private Dictionary<int, int> availableCoins;
-        private Dictionary<int, int> change;
+        private Dictionary<int, int> changeDictionary;
         private List<int> coinDenominations;
-        int lastAmount;
+        
 
         public MyCash(Dictionary<int, int> _availableCoins)
         {
@@ -23,11 +25,11 @@ namespace ChangeTests
                 int currentValueOfCoin = _availableCoins[coin];
                 if (currentValueOfCoin < 0) throw new ArgumentException("Value of coins can not be <0", nameof(currentValueOfCoin));
             }
-            coinDenominations.Sort((a, b) => b - a);
+            coinDenominations.Sort();
           
-            change = new Dictionary<int, int>();
+            changeDictionary = new Dictionary<int, int>();
             availableCoins = _availableCoins;
-            lastAmount = 0;
+            
         }
 
         public (bool isAvailable, Dictionary<int, int> coins) CalculateChange(int amount)
@@ -40,50 +42,53 @@ namespace ChangeTests
             if (availableCoins.Sum(x => x.Key * x.Value) < amount)
                 return (false, new Dictionary<int, int>());
 
-            change.Clear();
-            return HelpFunc(amount, 0);
-        }
+            changeDictionary.Clear();
 
-        private (bool isAvailable, Dictionary<int, int> coins) HelpFunc(int amount, int index)
-        {
-            if (amount < 0)
-                return (false, new Dictionary<int, int>());
-
-            if (amount == 0)
-                return (true, change);
-
-            if (index > coinDenominations.Count - 1)
-                return (false, new Dictionary<int, int>());
-
-            int currentAmount = amount;
-            int currentCoin = coinDenominations[index];
-
-            if (currentAmount >= currentCoin && availableCoins[currentCoin] > 0)
+            (bool isAvailable, Dictionary<int, int>) GetChangeCombination(int remainingAmount, List<int> currentCombination)
             {
-                int maxCoins = Math.Min(currentAmount / currentCoin, availableCoins[currentCoin]);
-
-                change.Add(currentCoin, maxCoins);
-                lastAmount = currentAmount;
-
-                currentAmount -= maxCoins * currentCoin;
-                availableCoins[currentCoin] -= maxCoins;
-
-                return HelpFunc(currentAmount, ++index);
-            }
-
-            else
-            {
-                if (change.Count != 0)
-                {
-                    int lastKey = change.Keys.Last();
-                    change.Remove(lastKey);
+                if (remainingAmount == 0)
+                { // we found combitation
+                    return (true, changeDictionary);
                 }
 
-                if (lastAmount == 0)
-                    return HelpFunc(amount, ++index);
-                else
-                    return HelpFunc(lastAmount, index);
+                // try to check all combinations
+                foreach (int coin in coinDenominations)
+                {
+                    if (coin <= remainingAmount && availableCoins[coin] > 0)
+                    {
+                        availableCoins[coin]--;
+                        currentCombination.Add(coin);
+
+                        GetChangeCombination(remainingAmount - coin, currentCombination);
+                        if (changeDictionary.Count != 0) return (true, changeDictionary); // if 1 combination is availible, return it
+
+                        if (currentCombination.Sum() == amount)
+                        {
+                            foreach (int changeCoin in currentCombination)
+                            {
+                                if (changeDictionary.ContainsKey(changeCoin))
+                                {
+                                    changeDictionary[changeCoin]++;
+                                }
+
+                                else
+                                {
+                                    changeDictionary.Add(changeCoin, 1);
+                                }
+                            }
+                            return (true, changeDictionary);
+                        }
+
+                        // if last denomination doesn`t allow to contine, then delite it, this combination is bad
+                        int index = currentCombination.Count - 1;
+
+                        availableCoins[currentCombination[index]]++;
+                        currentCombination.RemoveAt(index);
+                    }
+                }
+                return (false, changeDictionary);
             }
-        }
+            return GetChangeCombination(amount, new List<int>());
+        } 
     }
 }

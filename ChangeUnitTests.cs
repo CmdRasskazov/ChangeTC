@@ -72,7 +72,7 @@ namespace ChangeTests
             myCash = new MyCash(availableCoins);
 
             (bool isAvailable, var coins) = myCash.CalculateChange(124);
-            
+            Assert.IsTrue(isAvailable);
         }
 
 
@@ -146,13 +146,31 @@ namespace ChangeTests
         {
             MyCash myCash;
             var availableCoins = new Dictionary<int, int> {
+            { 100, 10 },
+            { 50, 0 },
+            { 10, 50 },
+            { 5, 100 },
+            { 2, 100 },
+            { 1, 100 }
+            };
+
+            myCash = new MyCash(availableCoins);
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(151);
+            Assert.IsTrue(isAvailable);
+        }
+
+        [TestMethod]
+        public void CalculateWithNoNeededCoins()
+        {
+            MyCash myCash;
+            var availableCoins = new Dictionary<int, int> {
             { 100, 1 },
             { 5, 3 },
             { 2, 8 },
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(111);
+            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(101);
             Assert.IsFalse(isAvailable);
         }
     }
