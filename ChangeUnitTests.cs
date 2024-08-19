@@ -19,7 +19,6 @@ namespace ChangeTests
             myCash = new MyCash(availableCoins);
             (bool isAvailable, var coins) = myCash.CalculateChange(-10);
             Assert.IsFalse(isAvailable);
-
         }
 
         [TestMethod]
@@ -122,7 +121,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(10);
+            (bool isAvailable, var coins) = myCash.CalculateChange(10);
             Assert.IsTrue(isAvailable);
         }
 
@@ -137,7 +136,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(116);
+            (bool isAvailable, var coins) = myCash.CalculateChange(116);
             Assert.IsTrue(isAvailable);
         }
 
@@ -155,7 +154,7 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(151);
+            (bool isAvailable, var coins) = myCash.CalculateChange(151);
             Assert.IsTrue(isAvailable);
         }
 
@@ -170,8 +169,26 @@ namespace ChangeTests
             };
 
             myCash = new MyCash(availableCoins);
-            (bool isAvailable, Dictionary<int, int> coins) = myCash.CalculateChange(101);
+            (bool isAvailable, var coins) = myCash.CalculateChange(101);
             Assert.IsFalse(isAvailable);
+        }
+
+        [TestMethod]
+        public void CalculateRightChangeSum()
+        {
+            MyCash myCash;
+            var availableCoins = new Dictionary<int, int> {
+            { 100, 1 },
+            { 5, 3 },
+            { 2, 8 },
+            };
+
+            myCash = new MyCash(availableCoins);
+            (bool isAvailable, var coins) = myCash.CalculateChange(102);
+
+            int sum = coins.Sum();
+            Assert.IsTrue(isAvailable);
+            Assert.AreEqual(102, sum);
         }
     }
 }
