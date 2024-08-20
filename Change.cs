@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ChangeTests
 {
-    public class MyCash
+    public class MyCash1 : IChangeCalculator
     {
-        private Dictionary<int, int> availableCoins;
-        private List<int> coinDenominations;
+        public Dictionary<int, int> availableCoins { get; set; } = [];
+        public List<int> coinDenominations { get; set; } = [];
 
-        public MyCash(Dictionary<int, int> _availableCoins)
+        public void Init(Dictionary<int, int> _availableCoins)
         {
             coinDenominations = _availableCoins.Keys.ToList();
 
@@ -28,20 +28,23 @@ namespace ChangeTests
             availableCoins = _availableCoins;
         }
 
+
         public (bool isAvailable, List<int> coins) CalculateChange(int amount)
         {
-            var change = new List<int>();
+            var changeDictionary = new List<int>();
 
             if (amount <= 0)
                 // negative value is unacceptable
-                return (false, change);
+                return (false, changeDictionary);
 
             // check if amount is overFlow
             if (availableCoins.Sum(x => x.Key * x.Value) < amount)
-                return (false, change);
+                return (false, changeDictionary);
 
-            return GetChangeCombination(amount, change, amount);
+
+            return GetChangeCombination(amount, changeDictionary, amount);
         }
+
 
         private (bool isAvailable, List<int>) GetChangeCombination(int remainingAmount, List<int> currentCombination, int amount)
         {
