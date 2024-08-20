@@ -200,20 +200,15 @@ namespace ChangeTests
             int changeCircle = 5;
 
             var cashCoins = new Dictionary<int, int>();
-
             List<int> changes = new List<int>();
-
 
             for (int i = 1; i <= cashCircle; i++)
             {
-
-                int coin = random.Next(1, 20);
+                int coin = random.Next(1, 50);
                 int coinValue = random.Next(0, 20);
 
                 cashCoins.TryAdd(coin, coinValue);
-
             }
-
 
             for (int i = 1; i <= changeCircle; i++)
             {
@@ -222,30 +217,13 @@ namespace ChangeTests
                 changes.Add(currentChange);
             }
 
-            foreach (var nominal in cashCoins)
-            {
-                Console.WriteLine(nominal);
-            }
-
-            foreach (int change in changes)
-            {
-                Console.WriteLine(change);
-            }
-
+            
             for (int i = 0; i < changes.Count; i++)
             {
                 MyCash myCash = new MyCash(cashCoins);
 
                 int sum = changes[i];
-                (bool flag, var change) = myCash.CalculateChange(sum);
-
-                Console.WriteLine($"isAvailable: {flag},  change: {sum}");
-
-                foreach (int check in change)
-                {
-                    Console.WriteLine(check);
-                }
-
+                (bool flag, var change) = myCash.CalculateChange(changes[i]);
             }
         }
     }
