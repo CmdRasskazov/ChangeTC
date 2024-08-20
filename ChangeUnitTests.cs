@@ -6,7 +6,7 @@ namespace ChangeTests
         [TestMethod]
         public void Calculate_Negative_value()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
@@ -16,14 +16,15 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(-10);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(-10);
             Assert.IsFalse(isAvailable);
         }
 
         [TestMethod]
         public void Calculate_zero_value() {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
@@ -33,15 +34,16 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(0);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(0);
             Assert.IsFalse(isAvailable);
         }
 
         [TestMethod]
         public void Calculate_Positive_Value()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
@@ -51,14 +53,15 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(123);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(123);
             Assert.IsTrue(isAvailable);
         }
 
         [TestMethod]
         public void Calculate_From_Possitive_Value_Query() {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 1 },
             { 50, 20 },
@@ -68,9 +71,9 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            myCash = new MyCash(availableCoins);
-
-            (bool isAvailable, var coins) = myCash.CalculateChange(124);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(124);
             Assert.IsTrue(isAvailable);
         }
 
@@ -78,7 +81,7 @@ namespace ChangeTests
         [TestMethod]
         public void Calculate_OverFLow_Value()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 20 },
@@ -88,8 +91,9 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(3301);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(3301);
             Assert.IsFalse(isAvailable);
         }
 
@@ -106,13 +110,14 @@ namespace ChangeTests
             { 2, -1 },
             { 1, -2 }
             };
-            MyCash testInvalidValueCash = new MyCash(invalidCoins);
+            MyCash1 testInvalidValueCash = new MyCash1();
+            testInvalidValueCash.Init(invalidCoins);
         }
 
         [TestMethod]
         public void Yoy()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 5, 1 },
             { 4, 1 },
@@ -120,30 +125,32 @@ namespace ChangeTests
             { 2, 1 },
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(10);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(10);
             Assert.IsTrue(isAvailable);
         }
 
         [TestMethod]
         public void CalculateNotStandardRunFunc()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 1 },
             { 5, 3 },
             { 2, 8 },
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(116);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(116);
             Assert.IsTrue(isAvailable);
         }
 
         [TestMethod]
         public void CalculateWithoutNeededCoins()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 10 },
             { 50, 0 },
@@ -153,38 +160,41 @@ namespace ChangeTests
             { 1, 100 }
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(151);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(151);
             Assert.IsTrue(isAvailable);
         }
 
         [TestMethod]
         public void CalculateWithNoNeededCoins()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 1 },
             { 5, 3 },
             { 2, 8 },
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(101);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(101);
             Assert.IsFalse(isAvailable);
         }
 
         [TestMethod]
         public void CalculateRightChangeSum()
         {
-            MyCash myCash;
+            MyCash1 myCash1;
             var availableCoins = new Dictionary<int, int> {
             { 100, 1 },
             { 5, 3 },
             { 2, 8 },
             };
 
-            myCash = new MyCash(availableCoins);
-            (bool isAvailable, var coins) = myCash.CalculateChange(102);
+            myCash1 = new MyCash1();
+            myCash1.Init(availableCoins);
+            (bool isAvailable, var coins) = myCash1.CalculateChange(102);
 
             int sum = coins.Sum();
             Assert.IsTrue(isAvailable);
@@ -220,10 +230,11 @@ namespace ChangeTests
             
             for (int i = 0; i < changes.Count; i++)
             {
-                MyCash myCash = new MyCash(cashCoins);
+                MyCash1 myCash1 = new MyCash1();
+
 
                 int sum = changes[i];
-                (bool flag, var change) = myCash.CalculateChange(changes[i]);
+                (bool flag, var change) = myCash1.CalculateChange(changes[i]);
             }
         }
     }
