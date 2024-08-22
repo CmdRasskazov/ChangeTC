@@ -3,6 +3,10 @@ namespace ChangeTests
     [TestClass]
     public class ChangeUnitTests
     {
+        //[TestCleanup]
+        //public void clean()
+
+        
         [TestMethod]
         public void Calculate_Negative_value()
         {
@@ -201,41 +205,91 @@ namespace ChangeTests
             Assert.AreEqual(102, sum);
         }
 
+        
+
+        
+        
+    }
+
+    [TestClass]
+    public class RandomValues
+    {
+        // number of test iterations
+        private int testCircle = 10;
+        //coins amount
+        private int cashCircle = 12;
+        private int currentChange = 0;
+        private bool testFlag;
+        private Random random = new();
+        private Dictionary<int, int> cashCoins = [];
+        
+
         [TestMethod]
         public void CalculateRandomCash()
         {
-            Random random = new();
-
-            int cashCircle = 10;
-            int changeCircle = 5;
-
-            var cashCoins = new Dictionary<int, int>();
-            List<int> changes = new List<int>();
-
-            for (int i = 1; i <= cashCircle; i++)
+            for (int index = 1; index <= testCircle; index++)
             {
-                int coin = random.Next(1, 50);
-                int coinValue = random.Next(0, 20);
+                cashCoins.Clear();
 
-                cashCoins.TryAdd(coin, coinValue);
-            }
+                //coins initialization in cashs
+                for (int i = 1; i <= cashCircle; i++)
+                {
+                    int coin = random.Next(1, 30);
+                    int coinValue = random.Next(0, 20);
 
-            for (int i = 1; i <= changeCircle; i++)
-            {
-                int currentChange = random.Next(10, 100);
+                    cashCoins.TryAdd(coin, coinValue);
+                }
 
-                changes.Add(currentChange);
-            }
+                currentChange = random.Next(10, 100);
 
-            
-            for (int i = 0; i < changes.Count; i++)
-            {
-                MyCash1 myCash1 = new MyCash1();
+                var cashes = new List<IChangeCalculator>() { new MyCash1(), new MyCash2() };
+                var flags = new List<bool>();
+                var changes = new List<List<int>>();
 
+                foreach (var item in cashes)
+                {
+                    item.Init(cashCoins);
+                    (bool flag, var change) = item.CalculateChange(currentChange);
+                    flags.Add(flag);
+                    changes.Add(change);
+                }
 
-                int sum = changes[i];
-                (bool flag, var change) = myCash1.CalculateChange(changes[i]);
+                for (int i = 1; i < flags.Count; i++)
+                {
+                    bool testFlag = flags[i] == flags[i - 1];
+                    if (!testFlag)
+                    {
+                        Console.WriteLine("Cash: ");
+
+                        foreach (var item in cashCoins)
+                        {
+                            Console.WriteLine($"{item.Key}: {item.Value}");
+                        }
+
+                        Console.WriteLine($"Change: {currentChange}");
+
+                        foreach (var list in changes)
+                        {
+                            Console.WriteLine("Combination: ");
+                            foreach (int coin in list)
+                            {
+                                Console.WriteLine(coin);
+                            }
+                        }
+                    }
+                    Assert.IsTrue(testFlag);
+                } 
             }
         }
+
+        //[TestCleanup]
+        //public void Cleanup()
+        //{
+        //    if (!testFlag)
+        //    {
+                
+
+        //    }
+        //}
     }
 }
