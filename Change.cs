@@ -8,41 +8,21 @@ using System.Threading.Tasks;
 
 namespace ChangeTests
 {
-    public class MyCash1 : IChangeCalculator
+    public class MyCash1 : ChangeCalculatorBase
     {
-        public Dictionary<int, int> availableCoins { get; set; } = [];
-        public List<int> coinDenominations { get; set; } = [];
-
-        public void Init(Dictionary<int, int> _availableCoins)
+        public override (bool isAvailable, List<int> coins) CalculateChange(int amount)
         {
-            coinDenominations = _availableCoins.Keys.ToList();
-
-            // check if value of coin is lower than 0
-            foreach (int coin in coinDenominations)
-            {
-                int currentValueOfCoin = _availableCoins[coin];
-                if (currentValueOfCoin < 0) throw new ArgumentException("Value of coins can not be <0", nameof(currentValueOfCoin));
-            }
-
-            coinDenominations.Sort((a, b) => b - a);
-            availableCoins = _availableCoins;
-        }
-
-
-        public (bool isAvailable, List<int> coins) CalculateChange(int amount)
-        {
-            var changeDictionary = new List<int>();
+            var change = new List<int>();
 
             if (amount <= 0)
                 // negative value is unacceptable
-                return (false, changeDictionary);
+                return (false, change);
 
             // check if amount is overFlow
             if (availableCoins.Sum(x => x.Key * x.Value) < amount)
-                return (false, changeDictionary);
+                return (false, change);
 
-
-            return GetChangeCombination(amount, changeDictionary, amount);
+            return GetChangeCombination(amount, change, amount);
         }
 
 
@@ -62,7 +42,6 @@ namespace ChangeTests
                     currentCombination.Add(coin);
 
                     GetChangeCombination(remainingAmount - coin, currentCombination, amount);
-                    /*if (currentCombination.Count != 0) return (true, currentCombination);*/ // if 1 combination is availible, return it
 
                     if (currentCombination.Sum() == amount)
                         return (true, currentCombination);
