@@ -8,9 +8,6 @@ namespace ChangeTests
 {
     interface IChangeCalculator
     {
-        Dictionary<int, int> availableCoins { get; set; }
-        List<int> coinDenominations { get; set; }
-
         void Init(Dictionary<int, int> _availableCoins);
         (bool isAvailable, List<int> coins) CalculateChange(int amount);
     }
